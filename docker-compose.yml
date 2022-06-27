@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+    app:
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        volumes:
+        -   ./app:/app
+        ports:
+        -   "3000:3000"
+        command: rails s -b 0.0.0.0
+        networks:
+        -   default
+        depends_on:
+        -    mysql
+
+    mysql:
+        build: 
+            context: ./
+            dockerfile: MySQLDockerfile
+#        image: registry.inventos.ru:5000/neurowebs/mysql:5.7
+        #hostname: mysql
+        environment:
+            MYSQL_DATABASE: blog_development
+            #MYSQL_ROOT_PASSWORD: 123
+            MYSQL_USER: user
+            MYSQL_PASSWORD: "123"
+            MYSQL_INITBD_SKIP_TZINFO: "true"
+            MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+            #MYSQL_ROOT_HOST: '%
+        #command: usr/local/bin/entrysql.sh
+        volumes: 
+            -  ./db:/var/lib/mysql
+            -  /etc/timezone:/etc/timezone:rw
+        #ports:
+        #-   "3306:3306"
+        networks:
+        -   default
+        restart: always
+
+
+networks:
+    default:
+        
+        
+
+
